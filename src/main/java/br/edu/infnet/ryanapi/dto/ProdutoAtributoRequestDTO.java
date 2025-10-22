@@ -1,6 +1,6 @@
 package br.edu.infnet.ryanapi.dto;
 
-public record ProdutoAtributoDTO(
+public record ProdutoAtributoRequestDTO(
         String nome,
         String valor
 ) {

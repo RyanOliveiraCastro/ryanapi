@@ -1,6 +1,8 @@
 package br.edu.infnet.ryanapi.controllers;
 
-import br.edu.infnet.ryanapi.dto.ClienteDTO;
+import br.edu.infnet.ryanapi.dto.ClienteRequestDTO;
+import br.edu.infnet.ryanapi.dto.ClienteResponseDTO;
+import br.edu.infnet.ryanapi.model.domain.Cliente;
 import br.edu.infnet.ryanapi.model.domain.service.ClienteService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,23 +19,29 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ClienteDTO incluir(@RequestBody ClienteDTO cliente) {
-        return clienteService.incluir(cliente);
+    public ClienteResponseDTO incluir(@RequestBody ClienteRequestDTO clienteRequestDTO) {
+        Cliente cliente = clienteService.incluir(clienteRequestDTO);
+        return ClienteResponseDTO.clienteToClienteReponseDTO(cliente);
     }
 
     @GetMapping
-    public List<ClienteDTO> obterLista() {
-        return clienteService.obterLista();
+    public List<ClienteResponseDTO> obterLista() {
+        List<Cliente> clientes = clienteService.obterLista();
+        return clientes.stream()
+                .map(ClienteResponseDTO::clienteToClienteReponseDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ClienteDTO obterPorId(@PathVariable Long id) {
-        return clienteService.obterPorId(id);
+    public ClienteResponseDTO obterPorId(@PathVariable Long id) {
+        Cliente cliente = clienteService.obterPorId(id);
+        return ClienteResponseDTO.clienteToClienteReponseDTO(cliente);
     }
 
     @PutMapping("/{id}")
-    public ClienteDTO alterar(@PathVariable Long id){
-        return clienteService.alterar(id);
+    public ClienteResponseDTO alterar(@PathVariable Long id, ClienteRequestDTO clienteRequestDTO) {
+        Cliente cliente = clienteService.alterar(id, clienteRequestDTO);
+        return ClienteResponseDTO.clienteToClienteReponseDTO(cliente);
     }
 
     @DeleteMapping("/{id}")

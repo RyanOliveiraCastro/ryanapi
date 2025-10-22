@@ -10,7 +10,7 @@ public record AgendamentoDTO(
          LocalTime horaDevolucao,
          Integer tipoEntrega,
          Integer tipoDevolucao,
-         ClienteDTO cliente,
-         List<ProdutoDTO> produtos
+         ClienteRequestDTO cliente,
+         List<ProdutoRequestDTO> produtos
 ) {
 }

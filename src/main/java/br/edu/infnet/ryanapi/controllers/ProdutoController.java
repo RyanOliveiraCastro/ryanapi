@@ -1,6 +1,8 @@
 package br.edu.infnet.ryanapi.controllers;
 
-import br.edu.infnet.ryanapi.dto.ProdutoDTO;
+import br.edu.infnet.ryanapi.dto.ProdutoRequestDTO;
+import br.edu.infnet.ryanapi.dto.ProdutoResponseDTO;
+import br.edu.infnet.ryanapi.model.domain.Produto;
 import br.edu.infnet.ryanapi.model.domain.service.ProdutoService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,27 +19,34 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ProdutoDTO incluir(@RequestBody ProdutoDTO produto) {
-        return produtoService.incluir(produto);
+    public ProdutoResponseDTO incluir(@RequestBody ProdutoRequestDTO produtoRequestDTO) {
+        Produto produto = produtoService.incluir(produtoRequestDTO);
+        return ProdutoResponseDTO.produtoToProdutoResponseDTO(produto);
     }
 
     @GetMapping
-    public List<ProdutoDTO> obterLista() {
-        return produtoService.obterLista();
+    public List<ProdutoResponseDTO> obterLista() {
+        List<Produto> produtos = produtoService.obterLista();
+        return produtos.stream()
+                .map(ProdutoResponseDTO::produtoToProdutoResponseDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ProdutoDTO obterPorId(@PathVariable Long id) {
-        return produtoService.obterPorId(id);
+    public ProdutoResponseDTO obterPorId(@PathVariable Long id) {
+        Produto produto = produtoService.obterPorId(id);
+        return ProdutoResponseDTO.produtoToProdutoResponseDTO(produto);
     }
 
     @PutMapping("/{id}")
-    public ProdutoDTO alterar(@PathVariable Long id){
-        return produtoService.alterar(id);
+    public ProdutoResponseDTO alterar(@PathVariable Long id, @RequestBody ProdutoRequestDTO produtoRequestDTO) {
+        System.out.println("Recebido DTO: " + produtoRequestDTO);
+        Produto produto = produtoService.alterar(id, produtoRequestDTO);
+        return ProdutoResponseDTO.produtoToProdutoResponseDTO(produto);
     }
 
     @DeleteMapping("/{id}")
-    public void inativar(@PathVariable Long id) {
-        produtoService.inativar(id);
+    public void excluir(@PathVariable Long id) {
+        produtoService.excluir(id);
     }
 }

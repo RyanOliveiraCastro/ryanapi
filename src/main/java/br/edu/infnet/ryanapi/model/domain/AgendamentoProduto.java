@@ -18,6 +18,7 @@ public class AgendamentoProduto {
     @MapsId("produtoId")
     private Produto produto;
 
+    @Column(name = "quantidade", nullable = false)
     private int quantidade;
 
 

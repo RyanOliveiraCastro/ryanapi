@@ -19,11 +19,15 @@ public class Agendamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
+    @Column(name = "data_fim", nullable = false)
     private LocalDate dataFim;
+    @Column(name = "hora_devolucao")
     private LocalTime horaDevolucao;
+    @Column(name = "tipo_entrega", nullable = false)
     private TipoEntrega tipoEntrega;
+    @Column(name = "tipo_devolucao", nullable = false)
     private TipoDevolucao tipoDevolucao;
 
     @ManyToOne
