@@ -4,6 +4,8 @@ import br.edu.infnet.ryanapi.dto.ProdutoRequestDTO;
 import br.edu.infnet.ryanapi.dto.ProdutoResponseDTO;
 import br.edu.infnet.ryanapi.model.domain.Produto;
 import br.edu.infnet.ryanapi.model.domain.service.ProdutoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,34 +21,39 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ProdutoResponseDTO incluir(@RequestBody ProdutoRequestDTO produtoRequestDTO) {
+    public ResponseEntity<ProdutoResponseDTO> incluir(@RequestBody ProdutoRequestDTO produtoRequestDTO) {
         Produto produto = produtoService.incluir(produtoRequestDTO);
-        return ProdutoResponseDTO.produtoToProdutoResponseDTO(produto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ProdutoResponseDTO.produtoToProdutoResponseDTO(produto));
     }
 
     @GetMapping
-    public List<ProdutoResponseDTO> obterLista() {
+    public ResponseEntity<List<ProdutoResponseDTO>> obterLista() {
         List<Produto> produtos = produtoService.obterLista();
-        return produtos.stream()
+        if (produtos.isEmpty()) {
+            ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(produtos.stream()
                 .map(ProdutoResponseDTO::produtoToProdutoResponseDTO)
-                .toList();
+                .toList());
     }
 
     @GetMapping("/{id}")
-    public ProdutoResponseDTO obterPorId(@PathVariable Long id) {
+    public ResponseEntity<ProdutoResponseDTO> obterPorId(@PathVariable Long id) {
         Produto produto = produtoService.obterPorId(id);
-        return ProdutoResponseDTO.produtoToProdutoResponseDTO(produto);
+        return ResponseEntity.ok(ProdutoResponseDTO.produtoToProdutoResponseDTO(produto));
     }
 
     @PutMapping("/{id}")
-    public ProdutoResponseDTO alterar(@PathVariable Long id, @RequestBody ProdutoRequestDTO produtoRequestDTO) {
+    public ResponseEntity<ProdutoResponseDTO> alterar(@PathVariable Long id, @RequestBody ProdutoRequestDTO produtoRequestDTO) {
         System.out.println("Recebido DTO: " + produtoRequestDTO);
         Produto produto = produtoService.alterar(id, produtoRequestDTO);
-        return ProdutoResponseDTO.produtoToProdutoResponseDTO(produto);
+        return ResponseEntity.ok(ProdutoResponseDTO.produtoToProdutoResponseDTO(produto));
     }
 
     @DeleteMapping("/{id}")
-    public void excluir(@PathVariable Long id) {
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
         produtoService.excluir(id);
+        return ResponseEntity.noContent().build();
     }
 }

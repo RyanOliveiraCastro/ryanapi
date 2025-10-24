@@ -2,9 +2,9 @@ package br.edu.infnet.ryanapi.model.domain.service;
 
 
 import br.edu.infnet.ryanapi.dto.EnderecoRequestDTO;
+import br.edu.infnet.ryanapi.exceptions.EnderecoNaoEncontradoException;
 import br.edu.infnet.ryanapi.model.domain.Endereco;
 import br.edu.infnet.ryanapi.model.domain.repository.EnderecoRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,20 +29,19 @@ public class EnderecoService {
     }
 
     public Endereco obterPorId(Long id) {
-        Endereco endereco = this.enderecoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(""));
-        return endereco;
+        return this.enderecoRepository.findById(id)
+                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não encontrado."));
     }
 
     public Endereco alterar(Long id, EnderecoRequestDTO enderecoRequestDTO) {
-        Endereco endereco = this.enderecoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado."));
+        Endereco endereco = this.obterPorId(id);
         endereco.alterar(enderecoRequestDTO);
         this.enderecoRepository.save(endereco);
         return endereco;
     }
 
     public void excluir(Long id) {
-        this.enderecoRepository.deleteById(id);
+        Endereco endereco = this.obterPorId(id);
+        this.enderecoRepository.delete(endereco);
     }
 }

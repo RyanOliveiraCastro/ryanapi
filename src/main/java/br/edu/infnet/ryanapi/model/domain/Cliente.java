@@ -4,9 +4,11 @@ import br.edu.infnet.ryanapi.dto.ClienteRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "cliente")
 public class Cliente {
 

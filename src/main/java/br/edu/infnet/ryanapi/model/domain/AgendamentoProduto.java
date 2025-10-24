@@ -1,9 +1,12 @@
 package br.edu.infnet.ryanapi.model.domain;
 
+import br.edu.infnet.ryanapi.exceptions.QuantidadeZeroNegativoException;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @Entity(name = "agendamento_produto")
 public class AgendamentoProduto {
 
@@ -19,13 +22,21 @@ public class AgendamentoProduto {
     private Produto produto;
 
     @Column(name = "quantidade", nullable = false)
-    private int quantidade;
-
+    private Integer quantidade;
 
     public AgendamentoProduto(Agendamento agendamento, Produto produto, int quantidade) {
         this.agendamento = agendamento;
         this.produto = produto;
+        if (quantidade <= 0) {
+            throw new QuantidadeZeroNegativoException("A quantidade não pode ser zero ou negativo");
+        }
         this.quantidade = quantidade;
-        this.id = new AgendamentoProdutoPK(agendamento.getId(), produto.getId());
+    }
+
+    public void adicionarAgendamento(Agendamento agendamento) {
+        this.agendamento = agendamento;
+        if (agendamento != null) {
+            this.id.setAgendamentoId(agendamento.getId());
+        }
     }
 }

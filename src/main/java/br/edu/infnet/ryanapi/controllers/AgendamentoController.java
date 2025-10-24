@@ -1,7 +1,12 @@
 package br.edu.infnet.ryanapi.controllers;
 
-import br.edu.infnet.ryanapi.dto.AgendamentoDTO;
+import br.edu.infnet.ryanapi.dto.AgendamentoProdutoRequestDTO;
+import br.edu.infnet.ryanapi.dto.AgendamentoRequestDTO;
+import br.edu.infnet.ryanapi.dto.AgendamentoResponseDTO;
+import br.edu.infnet.ryanapi.model.domain.Agendamento;
 import br.edu.infnet.ryanapi.model.domain.service.AgendamentoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,28 +22,58 @@ public class AgendamentoController {
     }
 
     @PostMapping
-    public AgendamentoDTO incluir(@RequestBody AgendamentoDTO agendamento) {
-        return agendamentoService.incluir(agendamento);
+    public ResponseEntity<AgendamentoResponseDTO> incluir(@RequestBody AgendamentoRequestDTO agendamentoRequestDTO) {
+        Agendamento agendamento = agendamentoService.incluir(agendamentoRequestDTO);
+        AgendamentoResponseDTO agendamentoResponseDTO
+                = AgendamentoResponseDTO.agendamentoToAgendamentoReponseDTO(agendamento);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(agendamentoResponseDTO);
     }
 
     @GetMapping
-    public List<AgendamentoDTO> obterLista() {
-        return agendamentoService.obterLista();
+    public ResponseEntity<List<AgendamentoResponseDTO>> obterLista() {
+        List<Agendamento> agendamentos = agendamentoService.obterLista();
+        if (agendamentos.isEmpty()) {
+            ResponseEntity.noContent().build();
+        }
+        List<AgendamentoResponseDTO> agendamentoResponseDTOS = agendamentos.stream()
+                .map(AgendamentoResponseDTO::agendamentoToAgendamentoReponseDTO)
+                .toList();
+        return ResponseEntity.ok(agendamentoResponseDTOS);
     }
 
     @GetMapping("/{id}")
-    public AgendamentoDTO obterPorId(@PathVariable Long id) {
-        return agendamentoService.obterPorId(id);
+    public ResponseEntity<AgendamentoResponseDTO> obterPorId(@PathVariable Long id) {
+        Agendamento agendamento = agendamentoService.obterPorId(id);
+        return ResponseEntity.ok(AgendamentoResponseDTO.agendamentoToAgendamentoReponseDTO(agendamento));
     }
 
     @PutMapping("/{id}")
-    public AgendamentoDTO alterar(@PathVariable Long id){
-        return agendamentoService.alterar(id);
+    public ResponseEntity<AgendamentoResponseDTO> alterar(@PathVariable Long id,
+                                                          @RequestBody AgendamentoRequestDTO agendamentoRequestDTO) {
+        Agendamento agendamento = agendamentoService.alterarAgendamento(id, agendamentoRequestDTO);
+        return ResponseEntity.ok(AgendamentoResponseDTO.agendamentoToAgendamentoReponseDTO(agendamento));
     }
 
-    @DeleteMapping("/{id}")
-    public void inativar(@PathVariable Long id) {
-        agendamentoService.inativar(id);
+    @PutMapping("/{id}/produtos")
+    public ResponseEntity<AgendamentoResponseDTO> alterarProdutos(@PathVariable Long id,
+                                                                  @RequestBody List<AgendamentoProdutoRequestDTO> agendamentoRequestDTO) {
+        Agendamento agendamento = agendamentoService.alterarProdutos(id, agendamentoRequestDTO);
+        return ResponseEntity.ok(AgendamentoResponseDTO.agendamentoToAgendamentoReponseDTO(agendamento));
     }
+
+    @PatchMapping("/{id}/status/{status}")
+    public ResponseEntity<AgendamentoResponseDTO> alterarStatus(@PathVariable Long id,
+                                                                @PathVariable Integer status) {
+        Agendamento agendamento = agendamentoService.alterarStatus(id, status);
+        return ResponseEntity.ok(AgendamentoResponseDTO.agendamentoToAgendamentoReponseDTO(agendamento));
+    }
+
+    @PatchMapping("/{id}/finalizar")
+    public ResponseEntity<AgendamentoResponseDTO> finalizarAgendamento(@PathVariable Long id) {
+        Agendamento agendamento = agendamentoService.finalizarAgendamento(id);
+        return ResponseEntity.ok(AgendamentoResponseDTO.agendamentoToAgendamentoReponseDTO(agendamento));
+    }
+
 
 }
