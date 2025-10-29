@@ -4,6 +4,7 @@ import br.edu.infnet.ryanapi.dto.ClienteRequestDTO;
 import br.edu.infnet.ryanapi.dto.ClienteResponseDTO;
 import br.edu.infnet.ryanapi.model.domain.Cliente;
 import br.edu.infnet.ryanapi.model.domain.service.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<ClienteResponseDTO> incluir(@RequestBody ClienteRequestDTO clienteRequestDTO) {
+    public ResponseEntity<ClienteResponseDTO> incluir(@Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
         Cliente cliente = clienteService.incluir(clienteRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ClienteResponseDTO.clienteToClienteReponseDTO(cliente));
@@ -45,7 +46,8 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponseDTO> alterar(@PathVariable Long id, ClienteRequestDTO clienteRequestDTO) {
+    public ResponseEntity<ClienteResponseDTO> alterar(@PathVariable Long id,
+                                                      @Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
         Cliente cliente = clienteService.alterar(id, clienteRequestDTO);
         return ResponseEntity.ok(ClienteResponseDTO.clienteToClienteReponseDTO(cliente));
     }

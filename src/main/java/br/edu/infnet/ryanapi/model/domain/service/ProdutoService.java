@@ -9,6 +9,7 @@ import br.edu.infnet.ryanapi.model.domain.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -31,6 +32,17 @@ public class ProdutoService {
 
     public List<Produto> obterLista() {
         return this.produtoRepository.findAll();
+    }
+
+    public List<Produto> obterPorCategoria(String categoria) {
+        return this.produtoRepository.findByCategoria(categoria);
+    }
+
+    public List<Produto> obterPorPrecoMaior(BigDecimal preco) {
+        return this.produtoRepository.findByPrecoGreaterThanEqualOrderByPrecoDesc(preco);
+    }
+    public List<Produto> obterPorPrecoMenor(BigDecimal preco) {
+        return this.produtoRepository.findByPrecoLessThanEqualOrderByPrecoDesc(preco);
     }
 
     public Produto obterPorId(Long id) {

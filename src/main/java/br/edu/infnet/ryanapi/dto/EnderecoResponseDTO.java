@@ -14,7 +14,7 @@ public record EnderecoResponseDTO(
 
 
     public static EnderecoResponseDTO enderecoToEnderecoReponseDTO(Endereco endereco) {
-        return new EnderecoResponseDTO(endereco.getId(), endereco.getRua(), endereco.getNumero(), endereco.getComplemento(),
-                endereco.getBairro(), endereco.getCidade(), endereco.getEstado(), endereco.getCep());
+        return new EnderecoResponseDTO(endereco.getId(), endereco.getLogradouro(), endereco.getNumero(), endereco.getComplemento(),
+                endereco.getBairro(), endereco.getLocalidade(), endereco.getEstado(), endereco.getCep());
     }
 }

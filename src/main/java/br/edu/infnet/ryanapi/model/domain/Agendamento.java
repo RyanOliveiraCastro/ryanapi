@@ -5,6 +5,8 @@ import br.edu.infnet.ryanapi.exceptions.AgendamentoNaoEncontradoException;
 import br.edu.infnet.ryanapi.exceptions.AgendamentoSemProdutoException;
 import br.edu.infnet.ryanapi.model.domain.enumerado.StatusAgendamento;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,12 +25,19 @@ public class Agendamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Future
     @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
+
+    @Future
     @Column(name = "data_fim", nullable = false)
     private LocalDate dataFim;
+
+    @PastOrPresent
     @Column(name = "data_hora_devolucao")
     private LocalDateTime dataHoraDevolucao;
+
     @Column(name = "tipo_entrega", nullable = false)
     private Integer tipoEntrega;
     @Column(name = "tipo_devolucao", nullable = false)

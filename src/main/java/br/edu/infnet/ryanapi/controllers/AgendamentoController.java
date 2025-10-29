@@ -5,10 +5,12 @@ import br.edu.infnet.ryanapi.dto.AgendamentoRequestDTO;
 import br.edu.infnet.ryanapi.dto.AgendamentoResponseDTO;
 import br.edu.infnet.ryanapi.model.domain.Agendamento;
 import br.edu.infnet.ryanapi.model.domain.service.AgendamentoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -42,6 +44,30 @@ public class AgendamentoController {
         return ResponseEntity.ok(agendamentoResponseDTOS);
     }
 
+    @GetMapping("/intervalo/data-inicial/{inicio}/{fim}")
+    public ResponseEntity<List<AgendamentoResponseDTO>> obterAgendamentosDataInicialIntervalo(@PathVariable LocalDate inicio, @PathVariable LocalDate fim) {
+        List<Agendamento> agendamentos = agendamentoService.obterAgendamentosDataInicialIntervalo(inicio, fim);
+        if (agendamentos.isEmpty()) {
+            ResponseEntity.noContent().build();
+        }
+        List<AgendamentoResponseDTO> agendamentoResponseDTOS = agendamentos.stream()
+                .map(AgendamentoResponseDTO::agendamentoToAgendamentoReponseDTO)
+                .toList();
+        return ResponseEntity.ok(agendamentoResponseDTOS);
+    }
+
+    @GetMapping("/bairro")
+    public ResponseEntity<List<AgendamentoResponseDTO>> obterAgendamentosPorBairro(@RequestParam String nome) {
+        List<Agendamento> agendamentos = agendamentoService.obterAgendamentosPorBairro(nome);
+        if (agendamentos.isEmpty()) {
+            ResponseEntity.noContent().build();
+        }
+        List<AgendamentoResponseDTO> agendamentoResponseDTOS = agendamentos.stream()
+                .map(AgendamentoResponseDTO::agendamentoToAgendamentoReponseDTO)
+                .toList();
+        return ResponseEntity.ok(agendamentoResponseDTOS);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<AgendamentoResponseDTO> obterPorId(@PathVariable Long id) {
         Agendamento agendamento = agendamentoService.obterPorId(id);
@@ -50,14 +76,14 @@ public class AgendamentoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AgendamentoResponseDTO> alterar(@PathVariable Long id,
-                                                          @RequestBody AgendamentoRequestDTO agendamentoRequestDTO) {
+                                                          @Valid @RequestBody AgendamentoRequestDTO agendamentoRequestDTO) {
         Agendamento agendamento = agendamentoService.alterarAgendamento(id, agendamentoRequestDTO);
         return ResponseEntity.ok(AgendamentoResponseDTO.agendamentoToAgendamentoReponseDTO(agendamento));
     }
 
     @PutMapping("/{id}/produtos")
     public ResponseEntity<AgendamentoResponseDTO> alterarProdutos(@PathVariable Long id,
-                                                                  @RequestBody List<AgendamentoProdutoRequestDTO> agendamentoRequestDTO) {
+                                                                  @Valid @RequestBody List<AgendamentoProdutoRequestDTO> agendamentoRequestDTO) {
         Agendamento agendamento = agendamentoService.alterarProdutos(id, agendamentoRequestDTO);
         return ResponseEntity.ok(AgendamentoResponseDTO.agendamentoToAgendamentoReponseDTO(agendamento));
     }

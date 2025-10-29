@@ -4,6 +4,7 @@ import br.edu.infnet.ryanapi.dto.EnderecoRequestDTO;
 import br.edu.infnet.ryanapi.dto.EnderecoResponseDTO;
 import br.edu.infnet.ryanapi.model.domain.Endereco;
 import br.edu.infnet.ryanapi.model.domain.service.EnderecoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class EnderecoController {
     }
 
     @PostMapping
-    public ResponseEntity<EnderecoResponseDTO> incluir(@RequestBody EnderecoRequestDTO enderecoRequestDTO) {
+    public ResponseEntity<EnderecoResponseDTO> incluir(@Valid @RequestBody EnderecoRequestDTO enderecoRequestDTO) {
         Endereco endereco = enderecoService.incluir(enderecoRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(EnderecoResponseDTO.enderecoToEnderecoReponseDTO(endereco));
@@ -46,7 +47,7 @@ public class EnderecoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EnderecoResponseDTO> alterar(@PathVariable Long id, EnderecoRequestDTO enderecoRequestDTO) {
+    public ResponseEntity<EnderecoResponseDTO> alterar(@PathVariable Long id, @Valid @RequestBody EnderecoRequestDTO enderecoRequestDTO) {
         Endereco endereco = enderecoService.alterar(id, enderecoRequestDTO);
         return ResponseEntity.ok(EnderecoResponseDTO.enderecoToEnderecoReponseDTO(endereco));
     }

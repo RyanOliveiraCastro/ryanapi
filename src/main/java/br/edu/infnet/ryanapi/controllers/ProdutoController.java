@@ -4,10 +4,12 @@ import br.edu.infnet.ryanapi.dto.ProdutoRequestDTO;
 import br.edu.infnet.ryanapi.dto.ProdutoResponseDTO;
 import br.edu.infnet.ryanapi.model.domain.Produto;
 import br.edu.infnet.ryanapi.model.domain.service.ProdutoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -21,7 +23,7 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoResponseDTO> incluir(@RequestBody ProdutoRequestDTO produtoRequestDTO) {
+    public ResponseEntity<ProdutoResponseDTO> incluir(@Valid @RequestBody ProdutoRequestDTO produtoRequestDTO) {
         Produto produto = produtoService.incluir(produtoRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ProdutoResponseDTO.produtoToProdutoResponseDTO(produto));
@@ -38,6 +40,39 @@ public class ProdutoController {
                 .toList());
     }
 
+    @GetMapping("/categoria")
+    public ResponseEntity<List<ProdutoResponseDTO>> obterPorCategoria(@RequestParam String nome) {
+        List<Produto> produtos = produtoService.obterPorCategoria(nome);
+        if (produtos.isEmpty()) {
+            ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(produtos.stream()
+                .map(ProdutoResponseDTO::produtoToProdutoResponseDTO)
+                .toList());
+    }
+
+    @GetMapping("/preco-maior")
+    public ResponseEntity<List<ProdutoResponseDTO>> obterPorPrecoMaior(@RequestParam BigDecimal valor) {
+        List<Produto> produtos = produtoService.obterPorPrecoMaior(valor);
+        if (produtos.isEmpty()) {
+            ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(produtos.stream()
+                .map(ProdutoResponseDTO::produtoToProdutoResponseDTO)
+                .toList());
+    }
+
+    @GetMapping("/preco-menor")
+    public ResponseEntity<List<ProdutoResponseDTO>> obterPorPrecoMenor(@RequestParam BigDecimal valor) {
+        List<Produto> produtos = produtoService.obterPorPrecoMenor(valor);
+        if (produtos.isEmpty()) {
+            ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(produtos.stream()
+                .map(ProdutoResponseDTO::produtoToProdutoResponseDTO)
+                .toList());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoResponseDTO> obterPorId(@PathVariable Long id) {
         Produto produto = produtoService.obterPorId(id);
@@ -45,7 +80,7 @@ public class ProdutoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoResponseDTO> alterar(@PathVariable Long id, @RequestBody ProdutoRequestDTO produtoRequestDTO) {
+    public ResponseEntity<ProdutoResponseDTO> alterar(@PathVariable Long id, @Valid @RequestBody ProdutoRequestDTO produtoRequestDTO) {
         System.out.println("Recebido DTO: " + produtoRequestDTO);
         Produto produto = produtoService.alterar(id, produtoRequestDTO);
         return ResponseEntity.ok(ProdutoResponseDTO.produtoToProdutoResponseDTO(produto));

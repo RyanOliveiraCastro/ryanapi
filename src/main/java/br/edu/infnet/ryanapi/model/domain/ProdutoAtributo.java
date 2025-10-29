@@ -2,6 +2,7 @@ package br.edu.infnet.ryanapi.model.domain;
 
 import br.edu.infnet.ryanapi.dto.ProdutoAtributoRequestDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +18,11 @@ public class ProdutoAtributo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Size(max = 30)
     @Column(name = "nome", nullable = false)
     private String nome;
+    @Size(max = 30)
     @Column(name = "valor", nullable = false)
     private String valor;
 

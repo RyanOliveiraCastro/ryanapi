@@ -1,11 +1,16 @@
 package br.edu.infnet.ryanapi.dto;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public record AgendamentoProdutoRequestDTO(
-         Long codigoProduto,
-         Integer quantidade
+        @NotNull
+        Long codigoProduto,
+
+        @NotNull
+        @Min(1)
+        Integer quantidade
 ) {
 }

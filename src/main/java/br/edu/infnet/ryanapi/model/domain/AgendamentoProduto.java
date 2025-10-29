@@ -2,6 +2,7 @@ package br.edu.infnet.ryanapi.model.domain;
 
 import br.edu.infnet.ryanapi.exceptions.QuantidadeZeroNegativoException;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +22,7 @@ public class AgendamentoProduto {
     @MapsId("produtoId")
     private Produto produto;
 
+    @Min(1)
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
 

@@ -9,10 +9,9 @@ import br.edu.infnet.ryanapi.model.domain.AgendamentoProduto;
 import br.edu.infnet.ryanapi.model.domain.Cliente;
 import br.edu.infnet.ryanapi.model.domain.Produto;
 import br.edu.infnet.ryanapi.model.domain.repository.AgendamentoRepository;
-import jakarta.persistence.EntityNotFoundException;
-import jdk.jshell.Snippet;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,6 +44,14 @@ public class AgendamentoService {
         return agendamentoRepository.save(agendamento);
     }
 
+    public List<Agendamento> obterAgendamentosDataInicialIntervalo(LocalDate inicio, LocalDate fim) {
+        return agendamentoRepository.obterAgendamentosDataInicialIntervalo(inicio, fim);
+    }
+
+    public List<Agendamento> obterAgendamentosPorBairro(String bairro) {
+        return agendamentoRepository.obterAgendamentosPorBairro(bairro);
+    }
+
     public List<Agendamento> obterLista() {
         return agendamentoRepository.findAll();
     }
@@ -74,14 +81,14 @@ public class AgendamentoService {
         return agendamento;
     }
 
-    public Agendamento alterarStatus(Long id, Integer statusAgendamento){
+    public Agendamento alterarStatus(Long id, Integer statusAgendamento) {
         Agendamento agendamento = this.obterPorId(id);
         agendamento.alterarStatus(statusAgendamento);
         agendamentoRepository.save(agendamento);
         return agendamento;
     }
 
-    public Agendamento finalizarAgendamento(Long id){
+    public Agendamento finalizarAgendamento(Long id) {
         Agendamento agendamento = this.obterPorId(id);
         agendamento.finalizarAgendamento(LocalDateTime.now());
         agendamentoRepository.save(agendamento);

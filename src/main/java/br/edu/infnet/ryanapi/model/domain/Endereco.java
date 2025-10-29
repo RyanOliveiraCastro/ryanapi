@@ -1,8 +1,8 @@
 package br.edu.infnet.ryanapi.model.domain;
 
 import br.edu.infnet.ryanapi.dto.EnderecoRequestDTO;
-import br.edu.infnet.ryanapi.dto.EnderecoResponseDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,37 +18,56 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "rua", nullable = false)
-    private String rua;
-    @Column(name = "numero", nullable = false)
-    private String numero;
-    @Column(name = "complemento")
-    private String complemento;
-    @Column(name = "bairro", nullable = false)
-    private String bairro;
-    @Column(name = "cidade", nullable = false)
-    private String cidade;
-    @Column(name = "estado", nullable = false)
-    private String estado;
+
+    @Size(min = 8, max = 8)
     @Column(name = "cep", nullable = false)
     private String cep;
 
+    @Size(max = 50)
+    @Column(name = "logradouro", nullable = false)
+    private String logradouro;
+
+    @Size(max = 30)
+    @Column(name = "bairro", nullable = false)
+    private String bairro;
+
+    @Size(max = 30)
+    @Column(name = "localidade", nullable = false)
+    private String localidade;
+
+    @Size(max = 2, min = 2)
+    @Column(name = "uf", nullable = false)
+    private String uf;
+
+    @Size(max = 30)
+    @Column(name = "estado", nullable = false)
+    private String estado;
+
+    @Column(name = "numero", nullable = false)
+    private String numero;
+
+    @Size(max = 50)
+    @Column(name = "complemento")
+    private String complemento;
+
     public Endereco(EnderecoRequestDTO endereco) {
-        this.rua = endereco.rua();
+        this.logradouro = endereco.logradouro();
         this.numero = endereco.numero();
         this.complemento = endereco.complemento();
         this.bairro = endereco.bairro();
-        this.cidade = endereco.cidade();
+        this.localidade = endereco.localidade();
+        this.uf = endereco.uf();
         this.estado = endereco.estado();
         this.cep = endereco.cep();
     }
 
-    public void alterar(EnderecoRequestDTO endereco){
-        this.rua = endereco.rua();
+    public void alterar(EnderecoRequestDTO endereco) {
+        this.logradouro = endereco.logradouro();
         this.numero = endereco.numero();
         this.complemento = endereco.complemento();
         this.bairro = endereco.bairro();
-        this.cidade = endereco.cidade();
+        this.localidade = endereco.localidade();
+        this.uf = endereco.uf();
         this.estado = endereco.estado();
         this.cep = endereco.cep();
     }
