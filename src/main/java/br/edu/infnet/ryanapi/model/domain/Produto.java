@@ -24,7 +24,7 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 30)
+    @Size(max = 40)
     @Column(name = "nome", nullable = false)
     private String nome;
 
@@ -55,6 +55,13 @@ public class Produto {
         produtoRequestDTO.atributos()
                 .forEach(atributoRequestDTO ->
                         adicionarAtributo(new ProdutoAtributo(atributoRequestDTO)));
+    }
+
+    public Produto(String nome, String categoria, String marca, BigDecimal preco) {
+        this.nome = nome;
+        this.categoria = categoria;
+        this.marca = marca;
+        this.preco = preco;
     }
 
     public void adicionarAtributo(ProdutoAtributo atributo) {

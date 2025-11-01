@@ -30,6 +30,11 @@ public class ProdutoService {
         return produto;
     }
 
+    public Produto incluirLoader(Produto produto) {
+        this.produtoRepository.save(produto);
+        return produto;
+    }
+
     public List<Produto> obterLista() {
         return this.produtoRepository.findAll();
     }

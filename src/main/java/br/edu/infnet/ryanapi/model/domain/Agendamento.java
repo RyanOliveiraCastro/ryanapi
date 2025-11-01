@@ -1,7 +1,6 @@
 package br.edu.infnet.ryanapi.model.domain;
 
 import br.edu.infnet.ryanapi.dto.AgendamentoRequestDTO;
-import br.edu.infnet.ryanapi.exceptions.AgendamentoNaoEncontradoException;
 import br.edu.infnet.ryanapi.exceptions.AgendamentoSemProdutoException;
 import br.edu.infnet.ryanapi.model.domain.enumerado.StatusAgendamento;
 import jakarta.persistence.*;

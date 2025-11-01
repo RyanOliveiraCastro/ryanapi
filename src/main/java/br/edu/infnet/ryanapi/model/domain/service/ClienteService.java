@@ -31,6 +31,11 @@ public class ClienteService {
         return cliente;
     }
 
+    public Cliente incluirLoader(Cliente cliente) {
+        this.clienteRepository.save(cliente);
+        return cliente;
+    }
+
     public List<Cliente> obterLista() {
         return this.clienteRepository.findAll();
     }

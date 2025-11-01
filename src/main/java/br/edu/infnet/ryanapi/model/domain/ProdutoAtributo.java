@@ -34,4 +34,9 @@ public class ProdutoAtributo {
         this.nome = produtoAtributoRequestDTO.nome();
         this.valor = produtoAtributoRequestDTO.valor();
     }
+
+    public ProdutoAtributo(String nome, String valor) {
+        this.nome = nome;
+        this.valor = valor;
+    }
 }

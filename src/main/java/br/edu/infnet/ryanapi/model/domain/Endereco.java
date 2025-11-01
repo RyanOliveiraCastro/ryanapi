@@ -19,7 +19,7 @@ public class Endereco {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 8, max = 8)
+    @Size(min = 9, max = 9)
     @Column(name = "cep", nullable = false)
     private String cep;
 
@@ -43,7 +43,7 @@ public class Endereco {
     @Column(name = "estado", nullable = false)
     private String estado;
 
-    @Column(name = "numero", nullable = false)
+    @Column(name = "numero")
     private String numero;
 
     @Size(max = 50)
