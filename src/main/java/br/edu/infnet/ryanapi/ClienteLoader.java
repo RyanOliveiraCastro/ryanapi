@@ -14,7 +14,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Collection;
 
-@Order(1)
+@Order(2)
 @Component
 public class ClienteLoader implements ApplicationRunner {
 

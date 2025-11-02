@@ -38,7 +38,8 @@ public class AgendamentoProduto {
     public void adicionarAgendamento(Agendamento agendamento) {
         this.agendamento = agendamento;
         if (agendamento != null) {
-            this.id.setAgendamentoId(agendamento.getId());
+            this.id.setAgendamentoId(this.agendamento.getId());
+            this.id.setProdutoId(this.produto.getId());
         }
     }
 }

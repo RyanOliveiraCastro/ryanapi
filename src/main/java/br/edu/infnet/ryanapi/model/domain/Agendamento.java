@@ -60,11 +60,22 @@ public class Agendamento {
         this.status = StatusAgendamento.AGENDADO.getId();
     }
 
+    public Agendamento(LocalDate dataInicio, LocalDate dataFim, LocalDateTime dataHoraDevolucao,
+                       Integer tipoEntrega, Integer tipoDevolucao, Integer status, Cliente cliente) {
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
+        this.dataHoraDevolucao = dataHoraDevolucao;
+        this.tipoEntrega = tipoEntrega;
+        this.tipoDevolucao = tipoDevolucao;
+        this.status = status;
+        this.cliente = cliente;
+    }
+
     public void adicionarAgendamentoProdutos(List<AgendamentoProduto> agendamentoProdutos) {
         if (agendamentoProdutos.isEmpty()) {
             throw new AgendamentoSemProdutoException("Agendamento deve ter ao menos um produto");
         }
-        agendamentoProdutos.forEach(produto -> produto.adicionarAgendamento(this));
+        agendamentoProdutos.forEach(agendamentoProduto -> agendamentoProduto.adicionarAgendamento(this));
         this.produtos.clear();
         this.produtos.addAll(agendamentoProdutos);
     }

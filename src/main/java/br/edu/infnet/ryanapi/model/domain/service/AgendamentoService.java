@@ -9,6 +9,7 @@ import br.edu.infnet.ryanapi.model.domain.AgendamentoProduto;
 import br.edu.infnet.ryanapi.model.domain.Cliente;
 import br.edu.infnet.ryanapi.model.domain.Produto;
 import br.edu.infnet.ryanapi.model.domain.repository.AgendamentoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -41,6 +42,10 @@ public class AgendamentoService {
                         }
                 ).toList();
         agendamento.adicionarAgendamentoProdutos(agendamentoProdutos);
+        return agendamentoRepository.save(agendamento);
+    }
+
+    public Agendamento incluirLoader(Agendamento agendamento) {
         return agendamentoRepository.save(agendamento);
     }
 
