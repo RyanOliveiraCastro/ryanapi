@@ -6,17 +6,17 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Setter
+@Getter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity(name = "produto")
 public class Produto {
 
@@ -83,5 +83,19 @@ public class Produto {
                 .forEach(atributoRequestDTO ->
                         adicionarAtributo(new ProdutoAtributo(atributoRequestDTO)));
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Produto [ID: %d | Nome: %s | Categoria: %s | Marca: %s | Preço: R$ %.2f | Atributos: %d]",
+                id,
+                nome,
+                categoria,
+                marca,
+                preco != null ? preco : BigDecimal.ZERO,
+                atributos != null ? atributos.size() : 0
+        );
+    }
+
 
 }

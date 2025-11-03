@@ -1,28 +1,24 @@
 package br.edu.infnet.ryanapi.model.domain;
 
 
-import br.edu.infnet.ryanapi.dto.AgendamentoRequestDTO;
 import br.edu.infnet.ryanapi.dto.ReservaRequestDTO;
-import br.edu.infnet.ryanapi.exceptions.AgendamentoSemProdutoException;
 import br.edu.infnet.ryanapi.exceptions.ReservaSemProdutoException;
-import br.edu.infnet.ryanapi.model.domain.enumerado.StatusAgendamento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Future;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity(name = "reserva")
 public class Reserva {
 
@@ -60,6 +56,13 @@ public class Reserva {
         this.operador = operador;
     }
 
+    public Reserva(LocalDate dataInicio, LocalDate dataFim, Cliente cliente, Operador operador) {
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
+        this.cliente = cliente;
+        this.operador = operador;
+    }
+
     public void adicionarReservaProdutos(List<ReservaProduto> reservaProdutos) {
         if (reservaProdutos.isEmpty()) {
             throw new ReservaSemProdutoException("Reserva deve ter ao menos um produto");
@@ -68,5 +71,33 @@ public class Reserva {
         this.reservaProdutos.clear();
         this.reservaProdutos.addAll(reservaProdutos);
     }
+
+    public void calcularValorTotal() {
+        this.valorTotal = reservaProdutos.stream()
+                .map(reservaProduto -> reservaProduto.getProduto().getPreco().multiply(BigDecimal.valueOf(reservaProduto.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public void alterar(ReservaRequestDTO reservaRequestDTO) {
+        this.dataInicio = reservaRequestDTO.dataInicio();
+        this.dataFim = reservaRequestDTO.dataFim();
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        return String.format(
+                "Reserva [ID: %d | Início: %s | Fim: %s | Valor Total: R$ %.2f | Cliente: %s | Operador: %s | Produtos: %d]",
+                id,
+                dataInicio != null ? dataInicio.format(dateFormatter) : "N/A",
+                dataFim != null ? dataFim.format(dateFormatter) : "N/A",
+                valorTotal != null ? valorTotal : BigDecimal.ZERO,
+                cliente != null ? cliente.getNome() : "N/A",
+                operador != null ? operador.getNome() : "N/A",
+                reservaProdutos != null ? reservaProdutos.size() : 0
+        );
+    }
+
 
 }

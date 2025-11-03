@@ -1,18 +1,12 @@
 package br.edu.infnet.ryanapi.model.domain.service;
 
 
-import br.edu.infnet.ryanapi.dto.AgendamentoProdutoRequestDTO;
-import br.edu.infnet.ryanapi.dto.AgendamentoRequestDTO;
 import br.edu.infnet.ryanapi.dto.ReservaRequestDTO;
-import br.edu.infnet.ryanapi.exceptions.AgendamentoNaoEncontradoException;
 import br.edu.infnet.ryanapi.exceptions.ReservaNaoEncontradoException;
 import br.edu.infnet.ryanapi.model.domain.*;
-import br.edu.infnet.ryanapi.model.domain.repository.AgendamentoRepository;
 import br.edu.infnet.ryanapi.model.domain.repository.ReservaRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -41,13 +35,13 @@ public class ReservaService {
 
         List<ReservaProduto> reservaProdutos = reservaRequestDTO.reservaProdutos()
                 .stream()
-                .map(reservaProdutoRequestDTO ->{
+                .map(reservaProdutoRequestDTO -> {
                     Produto produto = produtoService.obterPorId(reservaProdutoRequestDTO.codigoProduto());
                     return new ReservaProduto(reserva, produto, reservaProdutoRequestDTO.quantidade());
 
                 }).toList();
         reserva.adicionarReservaProdutos(reservaProdutos);
-        //TODO CALCULAR VALOR TOTAL
+        reserva.calcularValorTotal();
         return reservaRepository.save(reserva);
     }
 
@@ -70,5 +64,6 @@ public class ReservaService {
         reservaRepository.save(reserva);
         return reserva;
     }
+
 
 }

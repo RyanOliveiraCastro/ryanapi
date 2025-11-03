@@ -6,7 +6,6 @@ import br.edu.infnet.ryanapi.dto.AgendamentoRequestDTO;
 import br.edu.infnet.ryanapi.exceptions.AgendamentoNaoEncontradoException;
 import br.edu.infnet.ryanapi.model.domain.*;
 import br.edu.infnet.ryanapi.model.domain.repository.AgendamentoRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

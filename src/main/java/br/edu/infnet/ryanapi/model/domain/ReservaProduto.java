@@ -1,22 +1,15 @@
 package br.edu.infnet.ryanapi.model.domain;
 
-import br.edu.infnet.ryanapi.dto.ProdutoAtributoRequestDTO;
-import br.edu.infnet.ryanapi.exceptions.AgendamentoSemProdutoException;
 import br.edu.infnet.ryanapi.exceptions.QuantidadeZeroNegativoException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@Setter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity(name = "reserva_produto")
 public class ReservaProduto {
 
@@ -46,5 +39,17 @@ public class ReservaProduto {
     public void adicionarReserva(Reserva reserva) {
         this.reserva = reserva;
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "ReservaProduto [ID: %d | Produto: %s | Quantidade: %d | ReservaID: %s]",
+                id,
+                produto != null ? produto.getNome() : "N/A",
+                quantidade,
+                reserva != null ? reserva.getId() : "N/A"
+        );
+    }
+
 
 }

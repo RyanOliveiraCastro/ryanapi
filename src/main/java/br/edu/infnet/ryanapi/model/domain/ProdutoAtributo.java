@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity(name = "produto_atributo")
 public class ProdutoAtributo {
 
@@ -39,4 +39,16 @@ public class ProdutoAtributo {
         this.nome = nome;
         this.valor = valor;
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "ProdutoAtributo [ID: %d | Nome: %s | Valor: %s | Produto: %s]",
+                id,
+                nome,
+                valor,
+                produto != null ? produto.getNome() : "N/A"
+        );
+    }
+
 }

@@ -3,11 +3,13 @@ package br.edu.infnet.ryanapi.model.domain;
 import br.edu.infnet.ryanapi.exceptions.QuantidadeZeroNegativoException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Entity(name = "agendamento_produto")
 public class AgendamentoProduto {
 
@@ -41,5 +43,15 @@ public class AgendamentoProduto {
             this.id.setAgendamentoId(this.agendamento.getId());
             this.id.setProdutoId(this.produto.getId());
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "AgendamentoProduto [AgendamentoID: %s | Produto: %s | Quantidade: %d]",
+                agendamento != null ? agendamento.getId() : "N/A",
+                produto != null ? produto.getNome() : "N/A",
+                quantidade
+        );
     }
 }

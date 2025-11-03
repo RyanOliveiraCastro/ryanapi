@@ -3,14 +3,14 @@ package br.edu.infnet.ryanapi.model.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 
-@Getter
 @Setter
-@NoArgsConstructor
+@Getter
+@RequiredArgsConstructor
 @Embeddable
 public class AgendamentoProdutoPK implements Serializable {
 
@@ -25,5 +25,13 @@ public class AgendamentoProdutoPK implements Serializable {
     public AgendamentoProdutoPK(Long agendamentoId, Long produtoId) {
         this.agendamentoId = agendamentoId;
         this.produtoId = produtoId;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "AgendamentoProdutoPK [AgendamentoID: %d | ProdutoID: %d]",
+                agendamentoId, produtoId
+        );
     }
 }

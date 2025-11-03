@@ -6,7 +6,6 @@ import br.edu.infnet.ryanapi.exceptions.ProdutoNaoEncontradoException;
 import br.edu.infnet.ryanapi.model.domain.Produto;
 import br.edu.infnet.ryanapi.model.domain.repository.ProdutoAtributoRepository;
 import br.edu.infnet.ryanapi.model.domain.repository.ProdutoRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

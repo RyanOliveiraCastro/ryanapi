@@ -7,16 +7,17 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@Getter
 @Setter
+@Getter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @MappedSuperclass
 public class Pessoa {
 
@@ -59,5 +60,23 @@ public class Pessoa {
         this.nome = nome;
         this.ativo = true;
         this.dataCriacao = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        return String.format(
+                "Pessoa [ID: %d | Nome: %s | CPF/CNPJ: %s | Telefone: %s | Nascimento: %s | Email: %s | Ativo: %s | Criado em: %s]",
+                id,
+                nome,
+                cpfCnpj,
+                telefone,
+                dataNascimento != null ? dataNascimento.format(dateFormatter) : "N/A",
+                email,
+                ativo ? "Sim" : "Não",
+                dataCriacao != null ? dataCriacao.format(dateTimeFormatter) : "N/A"
+        );
     }
 }

@@ -8,16 +8,17 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity(name = "agendamento")
 public class Agendamento {
 
@@ -105,6 +106,26 @@ public class Agendamento {
     public void finalizarAgendamento(LocalDateTime dataHoraDevolucao) {
         this.status = StatusAgendamento.DEVOLVIDO.getId();
         this.dataHoraDevolucao = dataHoraDevolucao;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        return String.format(
+                "Agendamento [ID: %d | Início: %s | Fim: %s | Devolução: %s | TipoEntrega: %d | TipoDevolução: %d | Status: %d | Cliente: %s | Operador: %s | Produtos: %d]",
+                id,
+                dataInicio != null ? dataInicio.format(dateFormatter) : "N/A",
+                dataFim != null ? dataFim.format(dateFormatter) : "N/A",
+                dataHoraDevolucao != null ? dataHoraDevolucao.format(dateTimeFormatter) : "N/A",
+                tipoEntrega,
+                tipoDevolucao,
+                status,
+                cliente != null ? cliente.getNome() : "N/A",
+                operador != null ? operador.getNome() : "N/A",
+                produtos != null ? produtos.size() : 0
+        );
     }
 
 }

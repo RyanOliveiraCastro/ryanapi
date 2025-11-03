@@ -2,10 +2,10 @@ package br.edu.infnet.ryanapi;
 
 
 import br.edu.infnet.ryanapi.model.domain.*;
-import br.edu.infnet.ryanapi.model.domain.service.AgendamentoService;
 import br.edu.infnet.ryanapi.model.domain.service.ClienteService;
 import br.edu.infnet.ryanapi.model.domain.service.OperadorService;
 import br.edu.infnet.ryanapi.model.domain.service.ProdutoService;
+import br.edu.infnet.ryanapi.model.domain.service.ReservaService;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -15,25 +15,24 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-@Order(3)
+@Order(4)
 @Component
-public class AgendamentoLoader implements ApplicationRunner {
+public class ReservaLoader implements ApplicationRunner {
 
-    private AgendamentoService agendamentoService;
+    private ReservaService reservaService;
     private ClienteService clienteService;
     private OperadorService operadorService;
     private ProdutoService produtoService;
 
-    public AgendamentoLoader(AgendamentoService agendamentoService,
-                             ClienteService clienteService,
-                             OperadorService operadorService,
-                             ProdutoService produtoService) {
-        this.agendamentoService = agendamentoService;
+    public ReservaLoader(ReservaService reservaService,
+                         ClienteService clienteService,
+                         OperadorService operadorService,
+                         ProdutoService produtoService) {
+        this.reservaService = reservaService;
         this.clienteService = clienteService;
         this.operadorService = operadorService;
         this.produtoService = produtoService;
@@ -43,7 +42,7 @@ public class AgendamentoLoader implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
 
-        FileReader arquivo = new FileReader("agendamentos-listagem.csv");
+        FileReader arquivo = new FileReader("reservas-listagem.csv");
         BufferedReader leitura = new BufferedReader(arquivo);
 
         String linha = leitura.readLine();
@@ -53,42 +52,35 @@ public class AgendamentoLoader implements ApplicationRunner {
             campos = linha.split(";");
             LocalDate dataInicio = LocalDate.parse(campos[0]);
             LocalDate dataFim = LocalDate.parse(campos[1]);
-            LocalDateTime dataHoraDevolucao = null;
-            if (!campos[2].isBlank()) {
-                dataHoraDevolucao = LocalDateTime.parse(campos[2]);
-            }
-            Integer tipoEntrega = Integer.valueOf(campos[3]);
-            Integer tipoDevolucao = Integer.valueOf(campos[4]);
-            Integer status = Integer.valueOf(campos[5]);
-            Long codigoCliente = Long.valueOf(campos[6]);
-            Long codigoOperador = Long.valueOf(campos[7]);
+            Long codigoCliente = Long.valueOf(campos[2]);
+            Long codigoOperador = Long.valueOf(campos[3]);
             Cliente cliente = clienteService.obterPorId(codigoCliente);
             Operador operador = operadorService.obterPorId(codigoOperador);
 
-            Agendamento agendamento
-                    = new Agendamento(dataInicio, dataFim, dataHoraDevolucao,
-                    tipoEntrega, tipoDevolucao, status, cliente, operador);
+            Reserva reserva
+                    = new Reserva(dataInicio, dataFim, cliente, operador);
 
-            String produtosStr = campos[8];
+            String produtosStr = campos[4];
             String[] pares = produtosStr.split(",");
-            List<AgendamentoProduto> agendamentoProdutos = Arrays.stream(pares)
+            List<ReservaProduto> reservaProdutos = Arrays.stream(pares)
                     .map(par -> {
                         String[] pv = par.split(":");
                         if (pv.length == 2) {
                             Long codigoProduto = Long.valueOf(pv[0].trim());
                             int quantidade = Integer.parseInt(pv[1].trim());
                             Produto produto = produtoService.obterPorId(codigoProduto);
-                            return new AgendamentoProduto(agendamento, produto, quantidade);
+                            return new ReservaProduto(reserva, produto, quantidade);
                         }
                         return null;
                     }).toList();
-            agendamento.adicionarAgendamentoProdutos(agendamentoProdutos);
-            agendamentoService.incluirLoader(agendamento);
+            reserva.adicionarReservaProdutos(reservaProdutos);
+            reserva.calcularValorTotal();
+            reservaService.incluirLoader(reserva);
             linha = leitura.readLine();
         }
 
-        Collection<Agendamento> agendamento = agendamentoService.obterLista();
-        agendamento.forEach(System.out::println);
+        Collection<Reserva> reserva = reservaService.obterLista();
+        reserva.forEach(System.out::println);
         leitura.close();
     }
 

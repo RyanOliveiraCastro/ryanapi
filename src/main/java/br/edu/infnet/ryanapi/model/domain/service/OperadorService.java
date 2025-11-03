@@ -3,8 +3,8 @@ package br.edu.infnet.ryanapi.model.domain.service;
 
 import br.edu.infnet.ryanapi.dto.OperadorRequestDTO;
 import br.edu.infnet.ryanapi.exceptions.OperadorNaoEncontradoException;
-import br.edu.infnet.ryanapi.model.domain.Operador;
 import br.edu.infnet.ryanapi.model.domain.Endereco;
+import br.edu.infnet.ryanapi.model.domain.Operador;
 import br.edu.infnet.ryanapi.model.domain.repository.OperadorRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,7 @@
 package br.edu.infnet.ryanapi.controllers;
 
-import br.edu.infnet.ryanapi.dto.ReservaResponseDTO;
 import br.edu.infnet.ryanapi.dto.ReservaRequestDTO;
-import br.edu.infnet.ryanapi.model.domain.Agendamento;
+import br.edu.infnet.ryanapi.dto.ReservaResponseDTO;
 import br.edu.infnet.ryanapi.model.domain.Reserva;
 import br.edu.infnet.ryanapi.model.domain.service.ReservaService;
 import jakarta.validation.Valid;

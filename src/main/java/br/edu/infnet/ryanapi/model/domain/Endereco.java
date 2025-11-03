@@ -5,13 +5,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@Setter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity(name = "endereco")
 public class Endereco {
 
@@ -70,6 +68,21 @@ public class Endereco {
         this.uf = endereco.uf();
         this.estado = endereco.estado();
         this.cep = endereco.cep();
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Endereço [ID: %d | Logradouro: %s, Nº %s | Bairro: %s | Localidade: %s | UF: %s | CEP: %s | Complemento: %s]",
+                id,
+                logradouro,
+                numero != null ? numero : "S/N",
+                bairro,
+                localidade,
+                uf,
+                cep,
+                complemento != null ? complemento : "N/A"
+        );
     }
 }
 

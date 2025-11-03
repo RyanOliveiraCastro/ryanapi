@@ -1,6 +1,5 @@
 package br.edu.infnet.ryanapi.dto;
 
-import br.edu.infnet.ryanapi.model.domain.Agendamento;
 import br.edu.infnet.ryanapi.model.domain.AgendamentoProduto;
 
 import java.util.List;

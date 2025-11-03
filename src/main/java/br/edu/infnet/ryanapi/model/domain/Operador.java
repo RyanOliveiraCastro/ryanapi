@@ -1,23 +1,21 @@
 package br.edu.infnet.ryanapi.model.domain;
 
 import br.edu.infnet.ryanapi.dto.OperadorRequestDTO;
-import br.edu.infnet.ryanapi.dto.OperadorRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@Setter
 @Getter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity(name = "operador")
 public class Operador extends Pessoa {
 
@@ -54,5 +52,20 @@ public class Operador extends Pessoa {
         super(email, dataNascimento, telefone, cpfCnpj, nome);
         this.matricula = matricula;
         this.dataContratacao = dataContratacao;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        return String.format(
+                "Operador [ID: %d | Nome: %s | CPF/CNPJ: %s | Email: %s | Matricula: %s | Contratação: %s]",
+                getId(),
+                getNome(),
+                getCpfCnpj(),
+                getEmail(),
+                matricula,
+                dataContratacao != null ? dataContratacao.format(dateFormatter) : "N/A"
+        );
     }
 }

@@ -7,7 +7,6 @@ import br.edu.infnet.ryanapi.model.domain.Endereco;
 import br.edu.infnet.ryanapi.model.domain.service.ClienteService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.cglib.core.Local;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 

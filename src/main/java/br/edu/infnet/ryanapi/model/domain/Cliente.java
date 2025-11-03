@@ -1,18 +1,21 @@
 package br.edu.infnet.ryanapi.model.domain;
 
 import br.edu.infnet.ryanapi.dto.ClienteRequestDTO;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
-@Data
 @Entity(name = "cliente")
 public class Cliente extends Pessoa{
 
@@ -41,5 +44,22 @@ public class Cliente extends Pessoa{
     public Cliente(String nome, String cpfCnpj, String telefone, String email, LocalDate dataNascimento, Endereco endereco) {
         super(email, dataNascimento, telefone, cpfCnpj, nome);
         this.endereco = endereco;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        return String.format(
+                "Cliente [ID: %d | Nome: %s | CPF/CNPJ: %s | Telefone: %s | Email: %s | Ativo: %s | Criado em: %s | Endereço: %s]",
+                getId(),
+                getNome(),
+                getCpfCnpj(),
+                getTelefone(),
+                getEmail(),
+                isAtivo() ? "Sim" : "Não",
+                getDataCriacao() != null ? getDataCriacao().format(dateFormatter) : "N/A",
+                endereco != null ? endereco.getLogradouro() + ", " + endereco.getNumero() : "N/A"
+        );
     }
 }
