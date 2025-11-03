@@ -7,11 +7,13 @@ import br.edu.infnet.ryanapi.model.domain.Endereco;
 import br.edu.infnet.ryanapi.model.domain.service.ClienteService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.cglib.core.Local;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Order(2)
@@ -43,9 +45,10 @@ public class ClienteLoader implements ApplicationRunner {
             String cpfCnpj = campos[1];
             String telefone = campos[2];
             String email = campos[3];
-            Endereco endereco = cepFeignClient.findByCep(campos[4]);
+            LocalDate dataNascimento = LocalDate.parse(campos[4]);
+            Endereco endereco = cepFeignClient.findByCep(campos[5]);
 
-            Cliente cliente = new Cliente(nome, cpfCnpj, telefone, email, endereco);
+            Cliente cliente = new Cliente(nome, cpfCnpj, telefone, email, dataNascimento, endereco);
 
             clienteService.incluirLoader(cliente);
             linha = leitura.readLine();

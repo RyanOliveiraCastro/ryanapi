@@ -15,16 +15,18 @@ public record AgendamentoResponseDTO(
         Integer tipoDevolucao,
         Integer status,
         ClienteResponseDTO cliente,
+        OperadorResponseDTO operador,
         List<AgendamentoProdutoResponseDTO> produtos
 ) {
 
     public static AgendamentoResponseDTO agendamentoToAgendamentoReponseDTO(Agendamento agendamento) {
         ClienteResponseDTO clienteResponseDTO = ClienteResponseDTO.clienteToClienteReponseDTO(agendamento.getCliente());
+        OperadorResponseDTO operadorResponseDTO = OperadorResponseDTO.operadorToOperadorReponseDTO(agendamento.getOperador());
         List<AgendamentoProdutoResponseDTO> agendamentoProdutoResponseDTOS
                 = AgendamentoProdutoResponseDTO.agendamentoProdutosToAgendamentoProdutoResponseDTO(agendamento.getProdutos());
         return new AgendamentoResponseDTO(agendamento.getId(), agendamento.getDataInicio(), agendamento.getDataFim(),
                 agendamento.getDataHoraDevolucao(), agendamento.getTipoEntrega(), agendamento.getTipoDevolucao(), agendamento.getStatus(),
-                clienteResponseDTO, agendamentoProdutoResponseDTOS);
+                clienteResponseDTO, operadorResponseDTO, agendamentoProdutoResponseDTOS);
     }
 
 }

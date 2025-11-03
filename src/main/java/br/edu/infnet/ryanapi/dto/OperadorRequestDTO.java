@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public record ClienteRequestDTO(
+public record OperadorRequestDTO(
         @NotNull
         @Size(min = 3, max = 100)
         String nome,
@@ -21,6 +21,10 @@ public record ClienteRequestDTO(
         String email,
         @NotNull
         LocalDate dataNascimento,
+        @NotNull
+        String matricula,
+        @NotNull
+        LocalDate dataContratacao,
         @NotNull
         EnderecoRequestDTO endereco
 ) {

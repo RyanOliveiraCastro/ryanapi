@@ -2,13 +2,11 @@ package br.edu.infnet.ryanapi.dto;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
-public record AgendamentoRequestDTO(
+public record ReservaRequestDTO(
         @NotNull
         @Future
         LocalDate dataInicio,
@@ -16,17 +14,10 @@ public record AgendamentoRequestDTO(
         @Future
         LocalDate dataFim,
         @NotNull
-        @PastOrPresent
-        LocalDateTime dataHoraDevolucao,
-        @NotNull
-        Integer tipoEntrega,
-        @NotNull
-        Integer tipoDevolucao,
-        @NotNull
         Long codigoCliente,
         @NotNull
         Long codigoOperador,
         @NotNull
-        List<AgendamentoProdutoRequestDTO> agendamentoProdutos
+        List<ReservaProdutoRequestDTO> reservaProdutos
 ) {
 }

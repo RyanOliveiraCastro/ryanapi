@@ -4,10 +4,7 @@ package br.edu.infnet.ryanapi.model.domain.service;
 import br.edu.infnet.ryanapi.dto.AgendamentoProdutoRequestDTO;
 import br.edu.infnet.ryanapi.dto.AgendamentoRequestDTO;
 import br.edu.infnet.ryanapi.exceptions.AgendamentoNaoEncontradoException;
-import br.edu.infnet.ryanapi.model.domain.Agendamento;
-import br.edu.infnet.ryanapi.model.domain.AgendamentoProduto;
-import br.edu.infnet.ryanapi.model.domain.Cliente;
-import br.edu.infnet.ryanapi.model.domain.Produto;
+import br.edu.infnet.ryanapi.model.domain.*;
 import br.edu.infnet.ryanapi.model.domain.repository.AgendamentoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -21,19 +18,23 @@ public class AgendamentoService {
 
     ProdutoService produtoService;
     ClienteService clienteService;
+    OperadorService operadorService;
     AgendamentoRepository agendamentoRepository;
 
     public AgendamentoService(ProdutoService produtoService,
                               ClienteService clienteService,
+                              OperadorService operadorService,
                               AgendamentoRepository agendamentoRepository) {
         this.produtoService = produtoService;
         this.clienteService = clienteService;
+        this.operadorService = operadorService;
         this.agendamentoRepository = agendamentoRepository;
     }
 
     public Agendamento incluir(AgendamentoRequestDTO agendamentoRequestDTO) {
         Cliente cliente = clienteService.obterPorId(agendamentoRequestDTO.codigoCliente());
-        Agendamento agendamento = new Agendamento(agendamentoRequestDTO, cliente);
+        Operador operador = operadorService.obterPorId(agendamentoRequestDTO.codigoOperador());
+        Agendamento agendamento = new Agendamento(agendamentoRequestDTO, cliente, operador);
         List<AgendamentoProduto> agendamentoProdutos = agendamentoRequestDTO.agendamentoProdutos()
                 .stream()
                 .map(agendamentoProdutoRequestDTO -> {

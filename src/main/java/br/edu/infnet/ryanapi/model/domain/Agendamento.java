@@ -48,20 +48,25 @@ public class Agendamento {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @ManyToOne
+    @JoinColumn(name = "operador_id")
+    private Operador operador;
+
     @OneToMany(mappedBy = "agendamento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AgendamentoProduto> produtos = new ArrayList<>();
 
-    public Agendamento(AgendamentoRequestDTO agendamentoRequestDTO, Cliente cliente) {
+    public Agendamento(AgendamentoRequestDTO agendamentoRequestDTO, Cliente cliente, Operador operador) {
         this.dataInicio = agendamentoRequestDTO.dataInicio();
         this.dataFim = agendamentoRequestDTO.dataFim();
         this.tipoEntrega = agendamentoRequestDTO.tipoEntrega();
         this.tipoDevolucao = agendamentoRequestDTO.tipoDevolucao();
         this.cliente = cliente;
+        this.operador = operador;
         this.status = StatusAgendamento.AGENDADO.getId();
     }
 
     public Agendamento(LocalDate dataInicio, LocalDate dataFim, LocalDateTime dataHoraDevolucao,
-                       Integer tipoEntrega, Integer tipoDevolucao, Integer status, Cliente cliente) {
+                       Integer tipoEntrega, Integer tipoDevolucao, Integer status, Cliente cliente, Operador operador) {
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.dataHoraDevolucao = dataHoraDevolucao;
@@ -69,6 +74,7 @@ public class Agendamento {
         this.tipoDevolucao = tipoDevolucao;
         this.status = status;
         this.cliente = cliente;
+        this.operador = operador;
     }
 
     public void adicionarAgendamentoProdutos(List<AgendamentoProduto> agendamentoProdutos) {

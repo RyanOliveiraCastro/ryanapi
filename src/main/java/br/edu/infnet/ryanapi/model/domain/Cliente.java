@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +26,8 @@ public class Cliente extends Pessoa{
         this.setTelefone(cliente.telefone());
         this.setEmail(cliente.email());
         this.endereco = endereco;
+        this.setAtivo(true);
+        this.setDataCriacao(LocalDateTime.now());
     }
 
     public void alterar(ClienteRequestDTO cliente, Endereco endereco) {
@@ -33,8 +38,8 @@ public class Cliente extends Pessoa{
         this.endereco = endereco;
     }
 
-    public Cliente(String nome, String cpfCnpj, String telefone, String email, Endereco endereco) {
-        super(null, nome, cpfCnpj, telefone, email);
+    public Cliente(String nome, String cpfCnpj, String telefone, String email, LocalDate dataNascimento, Endereco endereco) {
+        super(email, dataNascimento, telefone, cpfCnpj, nome);
         this.endereco = endereco;
     }
 }
